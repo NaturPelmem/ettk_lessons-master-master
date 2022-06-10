@@ -4,7 +4,12 @@ from django.db.models import Q
 from django.shortcuts import render
 from config.settings import USER_RANGE_START, USER_RANGE_END
 from django import views
-from .models import TimeTable
+from .models import TimeTable, Teacher
+
+
+class TeacherList(views.generic.ListView):
+    model = Teacher
+    template_name = 'lessons_list.html'
 
 
 class LessonsDetail(views.generic.ListView):
@@ -72,4 +77,5 @@ class LessonFilterView(views.generic.ListView):
                     Q(teacher__middle_name=search) | Q(cabinet__cabinet_name=search) | Q(
                         group__group_name__startswith=search
                     ), date__range=[datetime.now() - timedelta(days=USER_RANGE_START),
-                                    datetime.now() + timedelta(days=USER_RANGE_END)]).order_by('-number').order_by('-date')
+                                    datetime.now() + timedelta(days=USER_RANGE_END)]).order_by('-number').order_by(
+                    '-date')
